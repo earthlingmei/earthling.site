@@ -1,14 +1,36 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fortune Whispers</title>
-    <meta name="description" content="Daily wisdom and inspiration from fortune cookies">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <title>Fortune Whispers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+      font-family: 'serif';
+      text-align:center;
+      padding: 1rem;
+    }
+    #fortune { font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+  <div id="fortune">Loading...</div>
+  <script>
+    fetch('fortunes.txt')
+      .then(res => res.text())
+      .then(text => {
+        const fortunes = text.split('\n').filter(Boolean);
+        const random = fortunes[Math.floor(Math.random() * fortunes.length)];
+        document.getElementById('fortune').textContent = random;
+      })
+      .catch(err => {
+        document.getElementById('fortune').textContent = 'Failed to load fortunes.';
+        console.error(err);
+      });
+  </script>
+</body>
 </html>
