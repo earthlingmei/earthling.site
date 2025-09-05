@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    letter-spacing: 0.01em;
+  }
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 2.5s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+/* Remove default margins and ensure full height */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* Selection styling with contemporary accent */
+::selection {
+  background-color: rgba(31, 72, 255, 0.20);
+  color: inherit;
+}
+
+::-moz-selection {
+  background-color: rgba(31, 72, 255, 0.20);
+  color: inherit;
+}
+
+/* Hide scrollbars for clean aesthetic */
+::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
