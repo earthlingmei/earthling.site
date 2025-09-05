@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [fortune, setFortune] = useState('');
@@ -10,8 +10,8 @@ function App() {
     const loadFortune = async () => {
       try {
         const response = await fetch('/fortunes/fortunes.json');
-        const text = await response.text();
-        const fortunes = text.split('\n').filter(line => line.trim() !== '');
+        const data = await response.json();
+        const fortunes = data.fortunes;
         
         if (fortunes.length > 0) {
           const randomIndex = Math.floor(Math.random() * fortunes.length);
