@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
 
 function App() {
   const [fortune, setFortune] = useState('');
@@ -9,7 +10,7 @@ function App() {
   useEffect(() => {
     const loadFortune = async () => {
       try {
-        const response = await fetch('/fortunes/fortunes.json');
+        const response = await fetch('./fortunes.json');
         const data = await response.json();
         const fortunes = data.fortunes;
         
