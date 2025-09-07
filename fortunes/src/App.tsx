@@ -5,6 +5,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [deviceOrientation, setDeviceOrientation] = useState({ x: 0, y: 0 });
+  const [motionEnabled, setMotionEnabled] = useState(false);
 
   useEffect(() => {
     const loadFortune = async () => {
@@ -38,40 +39,52 @@ function App() {
       });
     };
 
-    const handleDeviceOrientation = (e: DeviceOrientationEvent) => {
-      if (e.gamma !== null && e.beta !== null) {
-        setDeviceOrientation({
-          x: e.gamma * 2.5, // Left-right tilt
-          y: e.beta * 2.0   // Front-back tilt
-        });
-      }
-    };
-
-    // Request permission for iOS devices
-    const requestPermission = async () => {
-      if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-        try {
-          const permission = await (DeviceOrientationEvent as any).requestPermission();
-          if (permission === 'granted') {
-            window.addEventListener('deviceorientation', handleDeviceOrientation);
-          }
-        } catch (error) {
-          console.log('Device orientation permission denied');
-        }
-      } else {
-        // Non-iOS devices
-        window.addEventListener('deviceorientation', handleDeviceOrientation);
-      }
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    requestPermission();
-
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('deviceorientation', handleDeviceOrientation);
     };
   }, []);
+
+  // Enable device orientation on user gesture (required on iOS)
+  const enableMotion = async () => {
+    try {
+      const anyDO = (DeviceOrientationEvent as any);
+      if (anyDO && typeof anyDO.requestPermission === 'function') {
+        const permission = await anyDO.requestPermission();
+        if (permission !== 'granted') {
+          // If denied, keep mouse interaction only
+          setMotionEnabled(false);
+          return;
+        }
+      }
+
+      const handleDeviceOrientation = (e: DeviceOrientationEvent) => {
+        if (e.gamma !== null && e.beta !== null) {
+          // Light smoothing to avoid jitter
+          setDeviceOrientation(prev => {
+            const targetX = e.gamma * 2.5; // Left-right tilt
+            const targetY = e.beta * 2.0;  // Front-back tilt
+            const alpha = 0.15; // smoothing factor
+            return {
+              x: prev.x + (targetX - prev.x) * alpha,
+              y: prev.y + (targetY - prev.y) * alpha,
+            };
+          });
+        }
+      };
+
+      window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
+      setMotionEnabled(true);
+
+      // Cleanup when leaving page
+      const cleanup = () => {
+        window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      };
+      window.addEventListener('pagehide', cleanup, { once: true });
+    } catch {
+      setMotionEnabled(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -83,11 +96,24 @@ function App() {
     );
   }
 
+  const isTouchDevice = typeof window !== 'undefined' && 'ontouchstart' in window;
   const motionX = mousePosition.x + deviceOrientation.x;
   const motionY = mousePosition.y + deviceOrientation.y;
 
   return (
     <div className="min-h-screen flex items-center justify-center p-8 bg-gradient-to-br from-stone-100 via-amber-100 to-blue-100 relative overflow-hidden">
+      {/* Mobile motion enable overlay (shown only on touch devices until enabled) */}
+      {isTouchDevice && !motionEnabled && (
+        <button
+          onClick={enableMotion}
+          className="absolute inset-0 z-20 flex items-center justify-center bg-black/30 backdrop-blur-sm"
+          aria-label="Enable motion"
+        >
+          <span className="px-5 py-3 rounded-full bg-white/90 text-stone-800 text-base shadow-md">
+            Tap to enable motion
+          </span>
+        </button>
+      )}
       
       {/* Interactive floating elements */}
       <div 
