@@ -1,0 +1,46 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches: [main]       # only run when you push to main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Grab your repo files
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Step 2: Install Node so we can run npm
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Step 3: Install & build both apps
+      - name: Build both apps
+        run: |
+          npm --prefix site ci
+          npm --prefix site run build
+          npm --prefix fortunes ci
+          npm --prefix fortunes run build
+
+      # Step 4: Prepare the /docs folder that Pages will serve
+      - name: Prepare docs
+        run: |
+          rm -rf docs
+          mkdir -p docs/fortunes
+          cp -r site/dist/* docs/
+          cp -r fortunes/dist/* docs/fortunes/
+
+      # Step 5: Commit and push the built docs back to main
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@users.noreply.github.com"
+          git add docs
+          git commit -m "Update GitHub Pages" || echo "No changes"
+          git push
+

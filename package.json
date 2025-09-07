@@ -1,0 +1,9 @@
+{
+    "private": true,
+    "workspaces": ["site", "fortunes"],
+    "scripts": {
+      "dev:site": "npm --workspace site run dev",
+      "dev:fortunes": "npm --workspace fortunes run dev",
+      "build": "npm -w site run build && npm -w fortunes run build"
+    }
+  }
