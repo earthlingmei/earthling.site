@@ -13,18 +13,47 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm --prefix site ci && npm --prefix site run build
-      - run: npm --prefix fortunes ci && npm --prefix fortunes run build
-      - run: |
+
+      # Build main site
+      - name: Install + build site
+        run: |
+          echo "=== Building main site ==="
+          npm --prefix site ci
+          npm --prefix site run build
+          test -d site/dist || (echo "❌ site/dist missing" && exit 1)
+
+      # Build fortunes
+      - name: Install + build fortunes
+        run: |
+          echo "=== Building fortunes ==="
+          npm --prefix fortunes ci
+          npm --prefix fortunes run build
+          test -d fortunes/dist || (echo "❌ fortunes/dist missing" && exit 1)
+
+      # Assemble artifact
+      - name: Assemble out/ folder
+        run: |
+          echo "=== Assembling deploy folder ==="
+          rm -rf out
           mkdir -p out/fortunes
-          cp -r site/dist/* out/
-          cp -r fortunes/dist/* out/fortunes/
+          cp -rv site/dist/* out/ || (echo "❌ Failed to copy site" && exit 1)
+          cp -rv fortunes/dist/* out/fortunes/ || (echo "❌ Failed to copy fortunes" && exit 1)
+
+          # SPA fallback (optional)
+          [ -f site/dist/index.html ] && cp site/dist/index.html out/404.html || true
+          [ -f fortunes/dist/index.html ] && cp fortunes/dist/index.html out/fortunes/404.html || true
+
+          echo "Contents of out/:"
+          ls -R out
+
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
