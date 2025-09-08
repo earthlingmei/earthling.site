@@ -5,16 +5,55 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [deviceOrientation, setDeviceOrientation] = useState({ x: 0, y: 0 });
+  const STORAGE_KEY = 'recentFortunes';
+  const NO_REPEAT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
   useEffect(() => {
     const loadFortune = async () => {
       try {
         const response = await fetch('/fortunes/fortunes.json');
         const data = await response.json();
-        const fortunes = data.fortunes;
+        const fortunes: string[] = data.fortunes || [];
         
         if (fortunes.length > 0) {
-          const randomIndex = Math.floor(Math.random() * fortunes.length);
-          setFortune(fortunes[randomIndex].trim());
+          // Load recent fortunes from localStorage
+          const now = Date.now();
+          const recentRaw = localStorage.getItem(STORAGE_KEY);
+          let recent: { text: string; ts: number }[] = [];
+          try {
+            recent = recentRaw ? JSON.parse(recentRaw) : [];
+          } catch {
+            recent = [];
+          }
+
+          // Remove entries older than the window
+          recent = recent.filter(entry => now - entry.ts < NO_REPEAT_WINDOW_MS && typeof entry.text === 'string');
+
+          // Build a Set of recent texts for quick lookup
+          const recentSet = new Set(recent.map(r => r.text.trim()));
+
+          // Filter available fortunes
+          const trimmedFortunes = fortunes.map(f => (typeof f === 'string' ? f.trim() : ''))
+            .filter(f => f.length > 0);
+          let available = trimmedFortunes.filter(f => !recentSet.has(f));
+
+          // If all are filtered out (user saw many recently), fall back to full list
+          if (available.length === 0) {
+            available = trimmedFortunes;
+          }
+
+          // Pick random from available
+          const randomIndex = Math.floor(Math.random() * available.length);
+          const chosen = available[randomIndex];
+          setFortune(chosen);
+
+          // Update recent list (keep within time window and cap size)
+          const updated = [{ text: chosen, ts: now }, ...recent]
+            .filter((entry, idx, arr) => {
+              // de-duplicate by text, keeping most recent
+              return arr.findIndex(e => e.text === entry.text) === idx;
+            })
+            .slice(0, 500);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
         } else {
           setFortune('Wisdom comes to those who seek it.');
         }
