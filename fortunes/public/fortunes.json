@@ -1,6 +1,5 @@
 {
   "fortunes": [
-      // --- Philosophical / Poetic ---
       "A tree bends to survive the storm.",
       "The tide carries secrets and returns empty-handed.",
       "You share molecules with every forest.",
@@ -81,7 +80,6 @@
       "Silence is a language the wind speaks.",
       "A seed is a quiet revolution.",
       "The sun waits for no leaf.",
-      // --- Funny / Dad Jokes ---
       "I’m rooting for you.",
       "Don’t leaf me hanging.",
       "You’re unbe-leaf-ably awesome.",
@@ -162,7 +160,6 @@
       "Aloe there, beautiful human.",
       "Let’s stick together like burrs.",
       "You’re looking pine today.",
-      // --- Scientific Facts ---
       "Bamboo can grow over 80 cm in a single day.",
       "Oaks recognize their own seedlings and feed them more.",
       "Mycorrhizal fungi link entire forests.",
@@ -204,3 +201,4 @@
       "Some seeds can sleep for centuries before sprouting.",
       "Willow trees produce compounds similar to aspirin."
       ]
+}
