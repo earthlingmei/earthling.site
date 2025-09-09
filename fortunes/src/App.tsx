@@ -5,9 +5,24 @@ function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [deviceOrientation, setDeviceOrientation] = useState({ x: 0, y: 0 });
+  const [isMobile, setIsMobile] = useState(false);
+  const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
+  const [clickIntensity, setClickIntensity] = useState(0);
   const STORAGE_KEY = 'recentFortunes';
   const NO_REPEAT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
   useEffect(() => {
+    // Detect if device is mobile
+    const checkMobile = () => {
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+                            window.innerWidth <= 768 || 
+                            ('ontouchstart' in window);
+      setIsMobile(isMobileDevice);
+      console.log('Device type:', isMobileDevice ? 'Mobile' : 'Desktop');
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const loadFortune = async () => {
       try {
         const response = await fetch('/fortunes/fortunes.json');
@@ -70,56 +85,96 @@ function App() {
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 80,
-        y: (e.clientY / window.innerHeight - 0.5) * 80
-      });
+      if (!isMobile) {
+        setMousePosition({
+          x: (e.clientX / window.innerWidth - 0.5) * 80,
+          y: (e.clientY / window.innerHeight - 0.5) * 80
+        });
+      }
+    };
+
+    const handleClick = (e: MouseEvent) => {
+      if (!isMobile) {
+        setClickPosition({
+          x: (e.clientX / window.innerWidth - 0.5) * 100,
+          y: (e.clientY / window.innerHeight - 0.5) * 100
+        });
+        setClickIntensity(1);
+        // Fade out the click intensity
+        setTimeout(() => setClickIntensity(0), 1000);
+        console.log('Desktop click interaction triggered');
+      }
     };
 
     const handleDeviceOrientation = (e: DeviceOrientationEvent) => {
-      if (e.gamma !== null && e.beta !== null) {
+      if (isMobile && e.gamma !== null && e.beta !== null) {
         // Light smoothing to avoid jitter
         setDeviceOrientation(prev => {
           const targetX = e.gamma! * 3.0; // Left-right tilt (increased sensitivity)
           const targetY = e.beta! * 2.5;  // Front-back tilt (increased sensitivity)
           const alpha = 0.2; // smoothing factor (increased for more responsiveness)
-          return {
+          const newOrientation = {
             x: prev.x + (targetX - prev.x) * alpha,
             y: prev.y + (targetY - prev.y) * alpha,
           };
+          
+          // Debug log (only occasionally to avoid spam)
+          if (Math.random() < 0.01) {
+            console.log('Mobile device orientation:', { gamma: e.gamma, beta: e.beta, targetX, targetY, newOrientation });
+          }
+          
+          return newOrientation;
         });
       }
     };
 
-    // Request permission for iOS devices
-    const requestPermission = async () => {
-      if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
-        try {
-          const permission = await (DeviceOrientationEvent as any).requestPermission();
-          if (permission === 'granted') {
-            window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
-            console.log('Device orientation permission granted');
-          } else {
-            console.log('Device orientation permission denied');
-          }
-        } catch (error) {
-          console.log('Device orientation permission error:', error);
-        }
-      } else {
-        // Non-iOS devices
+    // Add listeners based on device type
+    if (isMobile) {
+      // Mobile: Add device orientation listener
+      try {
         window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
-        console.log('Device orientation listener added (non-iOS)');
+        console.log('Mobile: Device orientation listener added');
+      } catch (error) {
+        console.log('Mobile: Device orientation not available:', error);
       }
-    };
 
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-    requestPermission();
+      // For iOS devices, try to request permission on first user interaction
+      const handleUserInteraction = async () => {
+        if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+          try {
+            const permission = await (DeviceOrientationEvent as any).requestPermission();
+            if (permission === 'granted') {
+              console.log('Mobile: Device orientation permission granted after user interaction');
+            }
+          } catch (error) {
+            console.log('Mobile: Device orientation permission error:', error);
+          }
+        }
+        // Remove listeners after first interaction
+        window.removeEventListener('click', handleUserInteraction);
+        window.removeEventListener('touchstart', handleUserInteraction);
+      };
+
+      window.addEventListener('click', handleUserInteraction, { once: true });
+      window.addEventListener('touchstart', handleUserInteraction, { once: true });
+    } else {
+      // Desktop: Add mouse and click listeners
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+      window.addEventListener('click', handleClick, { passive: true });
+      console.log('Desktop: Mouse and click listeners added');
+    }
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('deviceorientation', handleDeviceOrientation);
+      if (isMobile) {
+        window.removeEventListener('deviceorientation', handleDeviceOrientation);
+        window.removeEventListener('click', handleUserInteraction);
+        window.removeEventListener('touchstart', handleUserInteraction);
+      } else {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('click', handleClick);
+      }
     };
-  }, []);
+  }, [isMobile]);
 
   if (isLoading) {
     return (
@@ -131,8 +186,8 @@ function App() {
     );
   }
 
-  const motionX = mousePosition.x + deviceOrientation.x;
-  const motionY = mousePosition.y + deviceOrientation.y;
+  const motionX = isMobile ? deviceOrientation.x : mousePosition.x + (clickPosition.x * clickIntensity);
+  const motionY = isMobile ? deviceOrientation.y : mousePosition.y + (clickPosition.y * clickIntensity);
 
   return (
     <div className="h-screen w-screen flex items-center justify-center p-8 bg-gradient-to-br from-stone-100 via-amber-100 to-blue-100 relative overflow-hidden">
