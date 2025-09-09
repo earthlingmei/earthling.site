@@ -80,9 +80,9 @@ function App() {
       if (e.gamma !== null && e.beta !== null) {
         // Light smoothing to avoid jitter
         setDeviceOrientation(prev => {
-          const targetX = e.gamma! * 2.5; // Left-right tilt
-          const targetY = e.beta! * 2.0;  // Front-back tilt
-          const alpha = 0.15; // smoothing factor
+          const targetX = e.gamma! * 3.0; // Left-right tilt (increased sensitivity)
+          const targetY = e.beta! * 2.5;  // Front-back tilt (increased sensitivity)
+          const alpha = 0.2; // smoothing factor (increased for more responsiveness)
           return {
             x: prev.x + (targetX - prev.x) * alpha,
             y: prev.y + (targetY - prev.y) * alpha,
@@ -98,13 +98,17 @@ function App() {
           const permission = await (DeviceOrientationEvent as any).requestPermission();
           if (permission === 'granted') {
             window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
+            console.log('Device orientation permission granted');
+          } else {
+            console.log('Device orientation permission denied');
           }
         } catch (error) {
-          console.log('Device orientation permission denied');
+          console.log('Device orientation permission error:', error);
         }
       } else {
         // Non-iOS devices
         window.addEventListener('deviceorientation', handleDeviceOrientation, { passive: true });
+        console.log('Device orientation listener added (non-iOS)');
       }
     };
 
@@ -119,7 +123,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-stone-50 via-amber-50 to-blue-50">
+      <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-br from-stone-50 via-amber-50 to-blue-50">
         <div className="animate-pulse">
           <div className="w-3 h-3 bg-gradient-to-r from-amber-300 to-blue-400 rounded-full shadow-lg"></div>
         </div>
@@ -131,7 +135,7 @@ function App() {
   const motionY = mousePosition.y + deviceOrientation.y;
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-8 bg-gradient-to-br from-stone-100 via-amber-100 to-blue-100 relative overflow-hidden">
+    <div className="h-screen w-screen flex items-center justify-center p-8 bg-gradient-to-br from-stone-100 via-amber-100 to-blue-100 relative overflow-hidden">
       
       {/* Interactive floating elements */}
       <div 
@@ -168,9 +172,9 @@ function App() {
       ></div>
       
       {/* Main fortune content */}
-      <div className="max-w-4xl mx-auto text-center relative z-10">
+      <div className="max-w-4xl mx-auto text-center relative z-10 px-4">
         <div className="relative">
-          <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl leading-relaxed font-medium tracking-wide animate-fade-in px-8 relative" style={{ color: '#1f48ff' }}>
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl leading-relaxed font-medium tracking-wide animate-fade-in px-4 sm:px-6 md:px-8 relative" style={{ color: '#1f48ff' }}>
             {fortune}
           </p>
         </div>
