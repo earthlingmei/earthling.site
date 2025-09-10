@@ -286,7 +286,7 @@ function App() {
       {/* Main fortune content */}
       <div className="max-w-4xl mx-auto text-center relative z-10 px-4">
         <div className="relative">
-          <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl 2xl:text-6xl leading-relaxed font-medium tracking-wide animate-fade-in px-4 sm:px-6 md:px-8 relative" style={{ color: '#1f48ff' }}>
+          <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl leading-relaxed font-medium tracking-wide animate-fade-in px-4 sm:px-6 md:px-8 relative" style={{ color: '#1f48ff' }}>
             {fortune}
           </p>
         </div>
