@@ -94,15 +94,27 @@ function App() {
     };
 
     const handleClick = (e: MouseEvent) => {
-      if (!isMobile) {
+      setClickPosition({
+        x: (e.clientX / window.innerWidth - 0.5) * 100,
+        y: (e.clientY / window.innerHeight - 0.5) * 100
+      });
+      setClickIntensity(1);
+      // Fade out the click intensity
+      setTimeout(() => setClickIntensity(0), 1000);
+      console.log('Click interaction triggered');
+    };
+
+    const handleTouch = (e: TouchEvent) => {
+      if (isMobile && e.touches.length > 0) {
+        const touch = e.touches[0];
         setClickPosition({
-          x: (e.clientX / window.innerWidth - 0.5) * 100,
-          y: (e.clientY / window.innerHeight - 0.5) * 100
+          x: (touch.clientX / window.innerWidth - 0.5) * 100,
+          y: (touch.clientY / window.innerHeight - 0.5) * 100
         });
         setClickIntensity(1);
         // Fade out the click intensity
         setTimeout(() => setClickIntensity(0), 1000);
-        console.log('Desktop click interaction triggered');
+        console.log('Mobile touch interaction triggered');
       }
     };
 
@@ -138,6 +150,10 @@ function App() {
         console.log('Mobile: Device orientation not available:', error);
       }
 
+      // Mobile: Add touch listener for tap interactions
+      window.addEventListener('touchstart', handleTouch, { passive: true });
+      console.log('Mobile: Touch listener added');
+
       // For iOS devices, try to request permission on first user interaction
       const handleUserInteraction = async () => {
         if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
@@ -167,6 +183,7 @@ function App() {
     return () => {
       if (isMobile) {
         window.removeEventListener('deviceorientation', handleDeviceOrientation);
+        window.removeEventListener('touchstart', handleTouch);
         window.removeEventListener('click', handleUserInteraction);
         window.removeEventListener('touchstart', handleUserInteraction);
       } else {
@@ -186,8 +203,8 @@ function App() {
     );
   }
 
-  const motionX = isMobile ? deviceOrientation.x : mousePosition.x + (clickPosition.x * clickIntensity);
-  const motionY = isMobile ? deviceOrientation.y : mousePosition.y + (clickPosition.y * clickIntensity);
+  const motionX = isMobile ? deviceOrientation.x + (clickPosition.x * clickIntensity) : mousePosition.x + (clickPosition.x * clickIntensity);
+  const motionY = isMobile ? deviceOrientation.y + (clickPosition.y * clickIntensity) : mousePosition.y + (clickPosition.y * clickIntensity);
 
   return (
     <div className="h-screen w-screen flex items-center justify-center p-8 bg-gradient-to-br from-stone-100 via-amber-100 to-blue-100 relative overflow-hidden">
