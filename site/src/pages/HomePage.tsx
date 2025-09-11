@@ -26,7 +26,15 @@ function HomePage() {
               <div className="bracket bracket-tr"></div>
               <div className="bracket bracket-bl"></div>
               <div className="bracket bracket-br"></div>
-              <span className="box-text">FLASHBOOK</span>
+              <span className="box-text">DESIGNS</span>
+              <div className="highlight-overlay"></div>
+            </Link>
+            <Link to="/book" className="nav-box">
+              <div className="bracket bracket-tl"></div>
+              <div className="bracket bracket-tr"></div>
+              <div className="bracket bracket-bl"></div>
+              <div className="bracket bracket-br"></div>
+              <span className="box-text">BOOKINGS</span>
               <div className="highlight-overlay"></div>
             </Link>
             <Link to="/tattoos" className="nav-box">
@@ -34,7 +42,7 @@ function HomePage() {
               <div className="bracket bracket-tr"></div>
               <div className="bracket bracket-bl"></div>
               <div className="bracket bracket-br"></div>
-              <span className="box-text">TATTOOS</span>
+              <span className="box-text">WORK</span>
               <div className="highlight-overlay"></div>
             </Link>
             <Link to="/about" className="nav-box">
@@ -43,14 +51,6 @@ function HomePage() {
               <div className="bracket bracket-bl"></div>
               <div className="bracket bracket-br"></div>
               <span className="box-text">ABOUT</span>
-              <div className="highlight-overlay"></div>
-            </Link>
-            <Link to="/book" className="nav-box">
-              <div className="bracket bracket-tl"></div>
-              <div className="bracket bracket-tr"></div>
-              <div className="bracket bracket-bl"></div>
-              <div className="bracket bracket-br"></div>
-              <span className="box-text">BOOK</span>
               <div className="highlight-overlay"></div>
             </Link>
           </div>

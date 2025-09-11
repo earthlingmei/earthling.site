@@ -13,9 +13,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/flashbook" element={<FlashbookPage />} />
-        <Route path="/tattoos" element={<TattoosPage />} />
+        <Route path="/book a tattoo" element={<BookPage />} />
+        <Route path="/Work" element={<TattoosPage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/book" element={<BookPage />} />
       </Routes>
     </Router>
   );
