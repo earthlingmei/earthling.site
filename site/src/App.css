@@ -1,6 +1,45 @@
 /* Import modern sans-serif fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;900&display=swap');
 
+/* CSS Custom Properties - Color Palette */
+:root {
+  /* Primary brand colors */
+  --color-brand-primary: #0312FF;
+  --color-brand-primary-light: rgba(3, 18, 255, 0.8);
+  --color-brand-primary-dark: #0208CC;
+  
+  /* Background colors */
+  --color-bg-primary: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --color-bg-secondary: #1a1a1a;
+  --color-bg-overlay: rgba(255, 255, 255, 0.05);
+  --color-bg-transparent: transparent;
+  
+  /* Text colors */
+  --color-text-primary: #0312FF;
+  --color-text-secondary: white;
+  --color-text-muted: rgba(255, 255, 255, 0.8);
+  --color-text-dark: #333;
+  --color-text-hover: rgba(255, 255, 255, 0.7);
+  
+  /* Accent colors */
+  --color-accent-green: rgb(223, 231, 119);
+  --color-accent-cream: #f8f8f0;
+  --color-accent-highlight: #eaf1a1;
+  
+  /* Border colors */
+  --color-border-primary: #0312FF;
+  --color-border-secondary: rgba(255, 255, 255, 0.2);
+  --color-border-muted: rgba(255, 255, 255, 0.3);
+  --color-border-hover: rgba(255, 255, 255, 0.5);
+  
+  /* Comet/particle colors */
+  --color-comet-primary: rgba(3, 18, 255, 0.8);
+  --color-comet-trail: linear-gradient(180deg, rgba(3, 18, 255, 0.8) 0%, transparent 100%);
+  
+  /* Texture colors */
+  --color-texture-dot: rgba(255,255,255,0.3);
+}
+
 /* Reset and base styles */
 * {
   margin: 0;
@@ -9,7 +48,7 @@
 }
 
 body {
-  overflow: hidden;
+  overflow-x: hidden;
   font-family: 'PP Fraktion Mono', -apple-system, BlinkMacSystemFont, 'Bodoni Ornaments', Roboto, sans-serif;
 }
 
@@ -17,7 +56,7 @@ body {
 .app-container {
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--color-bg-primary);
   position: relative;
   overflow: hidden;
 }
@@ -54,7 +93,7 @@ body {
   position: absolute;
   width: 2px;
   height: 2px;
-  background: rgba(3, 18, 255, 0.8);
+  background: var(--color-comet-primary);
   border-radius: 50%;
   animation: float 15s infinite linear;
 }
@@ -64,7 +103,7 @@ body {
   position: absolute;
   width: 1px;
   height: 20px;
-  background: linear-gradient(180deg, rgba(3, 18, 255, 0.8) 0%, transparent 100%);
+  background: var(--color-comet-trail);
   top: -20px;
   left: 50%;
   transform: translateX(-50%);
@@ -130,7 +169,7 @@ body {
 .title {
   font-size: 3rem;
   font-weight: 400;
-  color: #0312FF;
+  color: var(--color-text-primary);
   letter-spacing: 0.13em;
   text-align: center;
   font-family: 'Hermit', sans-serif;
@@ -171,7 +210,7 @@ body {
   position: absolute;
   width: 20px;
   height: 20px;
-  border: 2px solid #0312FF;
+  border: 2px solid var(--color-border-primary);
   transition: all 0.4s ease;
 }
 
@@ -254,7 +293,7 @@ body {
   position: absolute;
   width: 20px;
   height: 20px;
-  border: 2px solid #0312FF;
+  border: 2px solid var(--color-border-primary);
   transition: all 0.4s ease;
 }
 
@@ -289,7 +328,7 @@ body {
 .box-text {
   font-size: 1.1rem;
   font-weight: 500;
-  color: #0312FF;
+  color: var(--color-text-primary);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   z-index: 3;
@@ -304,7 +343,7 @@ body {
   left: 50%;
   width: 0;
   height: 0.7em;
-  background: #ffffff;
+  background: var(--color-accent-highlight);
   transform: translate(-50%, -50%);
   transition: all 0.3s ease;
   z-index: 2;
@@ -314,7 +353,7 @@ body {
 
 /* Hover effects */
 .nav-box:hover .box-text {
-  color: black;
+  color: var(--color-text-primary);
 }
 
 .nav-box:hover .highlight-overlay {
@@ -324,7 +363,7 @@ body {
 }
 
 .nav-box:hover .bracket {
-  border-color: rgba(3, 18, 255, 0.8);
+  border-color: var(--color-brand-primary-light);
   transform: scale(1.05);
 }
 
@@ -436,11 +475,12 @@ body {
 /* Page styles */
 .page-container {
   min-height: 100vh;
-  background: #1a1a1a;
-  color: white;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
   font-family: 'Inter', sans-serif;
   position: relative;
   overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .page-container::before {
@@ -478,7 +518,7 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: white;
+  color: var(--color-text-primary);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
@@ -490,7 +530,7 @@ body {
 }
 
 .back-button:hover {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-brand-primary-light);
 }
 
 .page-title {
@@ -498,7 +538,8 @@ body {
   font-weight: 400;
   letter-spacing: 0.13em;
   text-transform: uppercase;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Hermit', sans-serif;
+  color: var(--color-text-primary);
   margin: 0 auto;
   text-align: center;
   flex: 1;
@@ -554,7 +595,7 @@ body {
   gap: 0.5rem;
   padding: 1rem 1.5rem;
   background: transparent;
-  color: white;
+  color: var(--color-text-primary);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 500;
@@ -569,7 +610,7 @@ body {
   position: absolute;
   width: 16px;
   height: 16px;
-  border: 2px solid #0312FF;
+  border: 2px solid var(--color-border-primary);
   transition: all 0.4s ease;
 }
 
@@ -615,7 +656,7 @@ body {
 
 .action-button:hover .button-text,
 .action-button:hover .button-icon {
-  color: black;
+  color: var(--color-text-primary);
 }
 
 .action-button:hover .highlight-overlay {
@@ -624,7 +665,7 @@ body {
 }
 
 .action-button:hover .bracket {
-  border-color: rgba(255, 255, 255, 0.8);
+  border-color: var(--color-brand-primary-light);
   transform: scale(1.05);
 }
 
@@ -656,11 +697,46 @@ body {
 .about-text {
   line-height: 1.8;
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--color-text-primary);
 }
 
 .about-text p {
   margin-bottom: 1.5rem;
+}
+
+/* About page action buttons */
+.about-actions {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.about-actions .action-button {
+  min-width: 200px;
+  justify-content: center;
+}
+
+/* Signature stamp */
+.signature-stamp {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 100;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.signature-stamp:hover {
+  opacity: 1;
+}
+
+.stamp-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 /* Book page styles */
@@ -791,7 +867,7 @@ body {
   position: absolute;
   width: 20px;
   height: 20px;
-  border: 2px solid #0312FF;
+  border: 2px solid var(--color-border-primary);
   transition: all 0.4s ease;
 }
 

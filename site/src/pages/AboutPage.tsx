@@ -45,6 +45,27 @@ function AboutPage() {
             </p>
           </div>
         </div>
+
+        {/* Action buttons */}
+        <div className="about-actions">
+          <a href="https://venue.ink/@earthling_mei" target="_blank" rel="noopener noreferrer" className="action-button">
+            <div className="bracket bracket-tl"></div>
+            <div className="bracket bracket-tr"></div>
+            <div className="bracket bracket-bl"></div>
+            <div className="bracket bracket-br"></div>
+            <span className="button-text">BOOK A SESSION</span>
+            <div className="highlight-overlay"></div>
+          </a>
+          
+          <a href="https://venue.ink/@earthling_mei/flash" target="_blank" rel="noopener noreferrer" className="action-button">
+            <div className="bracket bracket-tl"></div>
+            <div className="bracket bracket-tr"></div>
+            <div className="bracket bracket-bl"></div>
+            <div className="bracket bracket-br"></div>
+            <span className="button-text">VIEW DESIGNS</span>
+            <div className="highlight-overlay"></div>
+          </a>
+        </div>
       </div>
     </div>
   );

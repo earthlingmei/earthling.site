@@ -21,22 +21,22 @@ function HomePage() {
         {/* Grid of boxes */}
         <main className="grid-container">
           <div className="box-grid">
-            <Link to="/flashbook" className="nav-box">
+            <a href="https://venue.ink/@earthling_mei/flash" target="_blank" rel="noopener noreferrer" className="nav-box">
               <div className="bracket bracket-tl"></div>
               <div className="bracket bracket-tr"></div>
               <div className="bracket bracket-bl"></div>
               <div className="bracket bracket-br"></div>
               <span className="box-text">DESIGNS</span>
               <div className="highlight-overlay"></div>
-            </Link>
-            <Link to="/book" className="nav-box">
+            </a>
+            <a href="https://venue.ink/@earthling_mei" target="_blank" rel="noopener noreferrer" className="nav-box">
               <div className="bracket bracket-tl"></div>
               <div className="bracket bracket-tr"></div>
               <div className="bracket bracket-bl"></div>
               <div className="bracket bracket-br"></div>
               <span className="box-text">BOOKINGS</span>
               <div className="highlight-overlay"></div>
-            </Link>
+            </a>
             <Link to="/tattoos" className="nav-box">
               <div className="bracket bracket-tl"></div>
               <div className="bracket bracket-tr"></div>
