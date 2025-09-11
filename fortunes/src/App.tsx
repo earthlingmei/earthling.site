@@ -11,6 +11,8 @@ function App() {
   const STORAGE_KEY = 'recentFortunes';
   const NO_REPEAT_WINDOW_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
   useEffect(() => {
+    console.log('App component mounted');
+    
     // Detect if device is mobile
     const checkMobile = () => {
       const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
@@ -25,8 +27,11 @@ function App() {
 
     const loadFortune = async () => {
       try {
-        const response = await fetch('/fortunes/fortunes.json');
+        console.log('Loading fortunes...');
+        const response = await fetch('./fortunes.json');
+        console.log('Response status:', response.status);
         const data = await response.json();
+        console.log('Fortunes data loaded:', data);
         const fortunes: string[] = data.fortunes || [];
         
         if (fortunes.length > 0) {
@@ -73,6 +78,7 @@ function App() {
           setFortune('Wisdom comes to those who seek it.');
         }
       } catch (error) {
+        console.error('Error loading fortunes:', error);
         // Fallback fortune if file doesn't exist yet
         setFortune('The journey of a thousand miles begins with a single step.');
       } finally {

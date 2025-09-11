@@ -12,36 +12,36 @@ function AboutPage() {
             <ArrowLeft size={20} />
             <span>Back</span>
           </Link>
-          <h1 className="page-title">ABOUT</h1>
+          <h1 className="page-title">ABOUT MEI</h1>
         </header>
 
         {/* About content */}
         <div className="about-content">
           <div className="about-image">
             <img 
-              src="https://images.pexels.com/photos/1040881/pexels-photo-1040881.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&fit=crop" 
+              src="https://raw.githubusercontent.com/earthlingmei/earthling.site/main/assets/images/About_me.JPG" 
               alt="Earthling Mei" 
             />
           </div>
           
           <div className="about-text">
             <p>
-              Welcome to my world of ink and artistry. I'm Mei, a tattoo artist passionate about 
-              creating meaningful, beautiful tattoos that tell your unique story.
+              Hi, I'm Mei, short for Mei-Ling. As your fellow earthling, I see myself as a creator
+              rather than just one thing. But for the intents and purposes of this webstie, I am a tattoo artist.
             </p>
             <p>
-              With years of experience in fine line work, blackwork, and custom designs, I specialize 
-              in creating pieces that are both timeless and deeply personal. Every tattoo is a 
-              collaboration between artist and client, resulting in something truly special.
+              I am a self taught artist. I started with the handpoke technique and have in the last year started using a rotary gun. 
+              My specialisation is floral and abstract things. I try to stick to that brief but I'm a free spirit. 
+              My background in horticulture and my 10 year long carrier in Landscape Architecture is rooted in my love for
+              plants and nature. That's a motif I will carry with me through everything I do. 
             </p>
             <p>
-              When I'm not tattooing, you can find me sketching new designs, exploring nature for 
-              inspiration, or working on my latest flash sheets. I believe that great tattoos come 
-              from understanding both the technical craft and the emotional significance of the art.
+              When I'm not tattooing, you can find me sketching new designs, taking long walks in nature and
+              living a life that feel fulling and in which I can see growth. 
             </p>
             <p>
-              Ready to start your tattoo journey? I'd love to hear your ideas and help bring your 
-              vision to life.
+              Send me your tattoo ideas and let's have chat. 
+              My DM's on Instagram are always open. 
             </p>
           </div>
         </div>
@@ -63,6 +63,15 @@ function AboutPage() {
             <div className="bracket bracket-bl"></div>
             <div className="bracket bracket-br"></div>
             <span className="button-text">VIEW DESIGNS</span>
+            <div className="highlight-overlay"></div>
+          </a>
+          
+          <a href="https://instagram.com/earthling_mei" target="_blank" rel="noopener noreferrer" className="action-button instagram-button">
+            <div className="bracket bracket-tl"></div>
+            <div className="bracket bracket-tr"></div>
+            <div className="bracket bracket-bl"></div>
+            <div className="bracket bracket-br"></div>
+            <span className="button-text">FOLLOW ON INSTAGRAM</span>
             <div className="highlight-overlay"></div>
           </a>
         </div>

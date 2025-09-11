@@ -677,7 +677,7 @@ body {
   gap: 3rem;
   max-width: 800px;
   margin: 0 auto;
-  text-align: center;
+  text-align: left;
 }
 
 .about-image {
@@ -685,7 +685,6 @@ body {
   height: 400px;
   border-radius: 12px;
   overflow: hidden;
-  filter: grayscale(100%);
 }
 
 .about-image img {
@@ -707,15 +706,30 @@ body {
 /* About page action buttons */
 .about-actions {
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
   justify-content: center;
   margin-top: 3rem;
   flex-wrap: wrap;
 }
 
 .about-actions .action-button {
-  min-width: 200px;
+  min-width: 180px;
   justify-content: center;
+}
+
+/* Instagram button styling */
+.instagram-button .button-text {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.instagram-button:hover .button-text {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Signature stamp */
