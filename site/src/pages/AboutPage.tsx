@@ -26,22 +26,21 @@ function AboutPage() {
           
           <div className="about-text">
             <p>
-              Hi, I'm Mei, short for Mei-Ling. As your fellow earthling, I see myself as a creator
-              rather than just one thing. But for the intents and purposes of this webstie, I am a tattoo artist.
+            Hi, I’m Mei, short for Mei-Ling.
+As your fellow Earthling, I see myself as more of a creator than just one thing. But for the purpose of this space, I’m a tattoo artist.
+I’m self-taught. I began with handpoke tattoos about 3 years ago now and over the past year, I’ve been working with a rotary machine. 
+My work leans toward florals, botanical and abstract forms, though I like to stay free-spirited in what I create.
+My roots are in plants and nature, I studied horticulture and spent 10 years as a dedicated landscape architect.
+</p>
+<p>
+  That love for the natural world runs through everything I make, whether it’s a tattoo, a drawing, or a side project.
+
             </p>
             <p>
-              I am a self taught artist. I started with the handpoke technique and have in the last year started using a rotary gun. 
-              My specialisation is floral and abstract things. I try to stick to that brief but I'm a free spirit. 
-              My background in horticulture and my 10 year long carrier in Landscape Architecture is rooted in my love for
-              plants and nature. That's a motif I will carry with me through everything I do. 
+            When I’m not tattooing, you’ll probably find me sketching, wandering outside, or simply trying to live a life 
             </p>
             <p>
-              When I'm not tattooing, you can find me sketching new designs, taking long walks in nature and
-              living a life that feel fulling and in which I can see growth. 
-            </p>
-            <p>
-              Send me your tattoo ideas and let's have chat. 
-              My DM's on Instagram are always open. 
+            If you have a tattoo idea in mind, I’d love to hear it. My DMs on Instagram are always open.
             </p>
           </div>
         </div>
