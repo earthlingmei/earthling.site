@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "validate-json": "node --input-type=module -e \"import { readFileSync } from 'fs'; try { JSON.parse(readFileSync('public/fortunes.json', 'utf8')); console.log('✓ fortunes.json is valid JSON'); } catch(e) { console.error('✗ fortunes.json is invalid:', e.message); process.exit(1); }\"",
+    "build": "npm run validate-json && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

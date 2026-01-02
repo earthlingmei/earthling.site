@@ -28,11 +28,36 @@ function App() {
     const loadFortune = async () => {
       try {
         console.log('Loading fortunes...');
-        const response = await fetch('/fortunes.json');
+        // Use relative path to work with base path /fortunes/
+        const response = await fetch('./fortunes.json');
         console.log('Response status:', response.status);
-        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch fortunes.json: ${response.status} ${response.statusText}`);
+        }
+        
+        const text = await response.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (parseError) {
+          console.error('JSON parse error:', parseError);
+          console.error('Invalid JSON content:', text.substring(0, 500));
+          throw new Error('fortunes.json contains invalid JSON. Please check the file format.');
+        }
+        
         console.log('Fortunes data loaded:', data);
+        
+        // Validate data structure
+        if (!data || typeof data !== 'object') {
+          throw new Error('fortunes.json must contain an object');
+        }
+        
         const fortunes: string[] = data.fortunes || [];
+        
+        if (!Array.isArray(fortunes)) {
+          throw new Error('fortunes.json must have a "fortunes" property that is an array');
+        }
         
         if (fortunes.length > 0) {
           // Load recent fortunes from localStorage
@@ -75,12 +100,14 @@ function App() {
             .slice(0, 500);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
         } else {
+          console.warn('fortunes.json contains an empty array');
           setFortune('Wisdom comes to those who seek it.');
         }
       } catch (error) {
         console.error('Error loading fortunes:', error);
-        // Fallback fortune if file doesn't exist yet
-        setFortune('The journey of a thousand miles begins with a single step.');
+        // More descriptive error message
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        setFortune(`Unable to load fortunes. ${errorMessage}`);
       } finally {
         setIsLoading(false);
       }
