@@ -28,7 +28,7 @@ function App() {
     const loadFortune = async () => {
       try {
         console.log('Loading fortunes...');
-        const response = await fetch('./fortunes.json');
+        const response = await fetch('/fortunes.json');
         console.log('Response status:', response.status);
         const data = await response.json();
         console.log('Fortunes data loaded:', data);
